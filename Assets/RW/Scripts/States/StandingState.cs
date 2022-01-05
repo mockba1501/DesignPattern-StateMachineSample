@@ -41,5 +41,40 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            //speed and rotationSpeed is inherited from GroundedState Class
+            speed = character.MovementSpeed;
+            rotationSpeed = character.RotationSpeed;
+
+            //local variables
+            crouch = false;
+            jump = false;
+        }
+
+        public override void HandleInput()
+        {
+            base.HandleInput();
+            //If the player presses on the Shift key
+            crouch = Input.GetButtonDown("Fire3");
+            //If the player presses on the Space key
+            jump = Input.GetButtonDown("Jump");
+        }
+        
+        //Based on the user input the state of the character will change to either ducking or jumping
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+            if(crouch)
+            {
+                stateMachine.ChangeState(character.ducking);
+            }
+            else if(jump)
+            {
+                stateMachine.ChangeState(character.jumping);
+            }
+        }
     }
+
 }

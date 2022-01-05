@@ -44,5 +44,33 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            //Set the values to their default values
+            horizontalInput = verticalInput = 0.0f;
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            //For cleaning up while transitioning to another state
+            character.ResetMoveParams();
+        }
+
+        public override void HandleInput()
+        {
+            base.HandleInput();
+            //To chache the horizontal and vertical input values
+            verticalInput = Input.GetAxis("Vertical");
+            horizontalInput = Input.GetAxis("Horizontal");
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            //Make the move by passing the chached input values and multiplied by their respective speeds
+            character.Move(verticalInput * speed, horizontalInput * rotationSpeed);
+        }
     }
 }

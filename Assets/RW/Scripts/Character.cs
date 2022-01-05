@@ -38,7 +38,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         #region Variables
         //This will reference the state machine that handles the movements of the current
         public StateMachine movementSM;
-        
+
         //Referencing the different states in the game
         public StandingState standing;
         public DuckingState ducking;
@@ -225,8 +225,8 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 
             //Initilize all the states of the game and pass to them a reference to this charcter game object
             standing = new StandingState(this, movementSM);
-            ducking = new DuckingState(this,movementSM);
-            jumping = new JumpingState(this,movementSM);
+            ducking = new DuckingState(this, movementSM);
+            jumping = new JumpingState(this, movementSM);
 
             //Start the game in the standing state
             movementSM.Initialize(standing);
@@ -238,7 +238,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             movementSM.CurrentState.HandleInput();
 
             //To handle the logic of the game
-            movementSM.CurrentState.LogicUpdate(); 
+            movementSM.CurrentState.LogicUpdate();
         }
 
         //Usually this update function is associated with physics and calculations
