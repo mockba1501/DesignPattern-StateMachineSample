@@ -32,7 +32,23 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 {
     public class StateMachine
     {
+        //Store the reference to the current active state of the state machine (It can be accessed publically but can only be set within the class)
         public State CurrentState { get; private set; }
 
+        //Configure the state machine by setting the current state
+        public void Initialize(State startingState)
+        {
+            CurrentState = startingState;
+            startingState.Enter();
+        }
+
+        //Handles the transition between the states
+        public void ChangeState(State newState)
+        {
+            CurrentState.Exit();
+
+            CurrentState = newState;
+            newState.Enter();
+        }
     }
 }

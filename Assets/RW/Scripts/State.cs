@@ -32,6 +32,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
 {
     public abstract class State
     {
+        //These variables are protected to give access to from drived classes
         protected Character character;
         protected StateMachine stateMachine;
 
@@ -44,6 +45,36 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         protected void DisplayOnUI(UIManager.Alignment alignment)
         {
             UIManager.Instance.Display(this, alignment);
+        }
+
+        //When you enter a new state
+        public virtual void Enter()
+        {
+            DisplayOnUI(UIManager.Alignment.Left);
+        }
+
+        //To handle input
+        public virtual void HandleInput()
+        {
+
+        }
+
+        //To handle the core logic
+        public virtual void LogicUpdate()
+        {
+
+        }
+
+        //To handle the physics logic and calculations
+        public virtual void PhysicsUpdate()
+        {
+
+        }
+
+        //When you exit the state for cleaning
+        public virtual void Exit()
+        {
+
         }
     }
 }
