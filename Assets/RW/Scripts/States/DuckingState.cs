@@ -41,5 +41,52 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         {
         }
 
+        public override void Enter()
+        {
+            base.Enter();
+            //Enable the crouch animation
+            character.SetAnimationBool(character.crouchParam, true);
+            
+            //From GroundedState super class
+            speed = character.CrouchSpeed;
+            rotationSpeed = character.CrouchRotationSpeed;
+
+            //To change the collider size according to the crouch collider height variable defined (CharacterData)
+            character.ColliderSize = character.CrouchColliderHeight;
+            belowCeiling = false;
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+            //Disable the crouch animation
+            character.SetAnimationBool(character.crouchParam, false);
+            //Reset the value of the collider
+            character.ColliderSize = character.NormalColliderHeight;
+        }
+
+        public override void HandleInput()
+        {
+            base.HandleInput();
+            //To ensure the crouch state is still active as long as the player is helding the button
+            crouchHeld = Input.GetButton("Fire3");
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+            //To check if the crouch is false or not below a ceiling change to a standing state
+            if( !(crouchHeld || belowCeiling) )
+            {
+                stateMachine.ChangeState(character.standing);
+            }
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            //If there is a collision around that point it means the character is below a ceiling
+            belowCeiling = character.CheckCollisionOverlap(character.transform.position + Vector3.up * character.NormalColliderHeight);
+        }
     }
 }
