@@ -49,5 +49,37 @@ namespace RayWenderlich.Unity.StatePatternInUnity
             character.ApplyImpulse(Vector3.up * character.JumpForce);
             character.TriggerAnimation(jumpParam);
         }
+
+        public override void Enter()
+        {
+            base.Enter();
+            //Singleton instance to play the jumping sound
+            SoundManager.Instance.PlaySound(SoundManager.Instance.jumpSounds);
+            //Indicate that the character is not on the ground
+            grounded = false;
+            Jump();
+        }
+
+        public override void LogicUpdate()
+        {
+            base.LogicUpdate();
+            //If the character reaches the ground
+            if(grounded)
+            {
+                //Change the animation to landing
+                character.TriggerAnimation(landParam);
+                //Play the landing sound
+                SoundManager.Instance.PlaySound(SoundManager.Instance.landing);
+                //Change the state to standing
+                stateMachine.ChangeState(character.standing);
+            }
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+            //Check if there is a collision between the player and the ground 
+            grounded = character.CheckCollisionOverlap(character.transform.position);
+        }
     }
 }
