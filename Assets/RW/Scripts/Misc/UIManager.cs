@@ -50,6 +50,7 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         [SerializeField]
         private string textToTrim = null;
 
+        //The UI Manager follows the singlton Pattern
         private void Awake()
         {
             if (Instance == null)
