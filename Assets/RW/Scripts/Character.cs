@@ -36,7 +36,13 @@ namespace RayWenderlich.Unity.StatePatternInUnity
     public class Character : MonoBehaviour
     {
         #region Variables
-
+        //This will reference the state machine that handles the movements of the current
+        public StateMachine movementSM;
+        
+        //Referencing the different states in the game
+        public StandingState standing;
+        public DuckingState ducking;
+        public JumpingState jumping;
 
 #pragma warning disable 0649
         [SerializeField]
@@ -212,8 +218,34 @@ namespace RayWenderlich.Unity.StatePatternInUnity
         #endregion
 
         #region MonoBehaviour Callbacks
+        //Functions from the MonoBehaviour Super class
+        private void Start()
+        {
+            movementSM = new StateMachine();
 
+            //Initilize all the states of the game and pass to them a reference to this charcter game object
+            standing = new StandingState(this, movementSM);
+            ducking = new DuckingState(this,movementSM);
+            jumping = new JumpingState(this,movementSM);
 
+            //Start the game in the standing state
+            movementSM.Initialize(standing);
+        }
+
+        private void Update()
+        {
+            //To continously check the input for the current state
+            movementSM.CurrentState.HandleInput();
+
+            //To handle the logic of the game
+            movementSM.CurrentState.LogicUpdate(); 
+        }
+
+        //Usually this update function is associated with physics and calculations
+        private void FixedUpdate()
+        {
+            movementSM.CurrentState.PhysicsUpdate();
+        }
         #endregion
     }
 }
